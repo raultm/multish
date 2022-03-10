@@ -1,0 +1,10 @@
+# Grupo de Ejemplos
+# Se pueden añadir comentarios con hash #
+# Para quitar comentarios se usa "awk -F\# '$1!="" { print $1 ;} ' "
+
+# Se pueden usar nombre de máquinas
+a01-pro # Aula 1a Planta
+# Se pueden usar ips
+172.20.20.20
+# Si vas a querer usar un usuario, concrétalo
+192.168.1.202
