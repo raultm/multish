@@ -1,0 +1,5 @@
+#!/bin/bash
+# file name preinst
+
+echo "Pre Installation code here ..."
+
