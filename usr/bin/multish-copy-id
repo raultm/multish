@@ -24,8 +24,10 @@ select opt in "${options[@]}" "Quit" ; do
         echo -n Password: 
         read -s password
 
-        for sshConn in $(cat $options | awk -F\# '$1!="" { print $1 ;}');  
+        for sshConn in $(cat $opt | awk -F\# '$1!="" { print $1 ;}');  
         do  
+            echo ""
+            echo $sshConn
             sshpass -p $password ssh-copy-id -i ~/.ssh/id_rsa.pub $sshConn
         done
         break
