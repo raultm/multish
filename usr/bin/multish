@@ -1,25 +1,73 @@
 #!/bin/bash
-prompt="Select group:"
-options=( $(find -maxdepth 1 -print0 -name "*.exe"| xargs -0) )
-options=( $(find /etc/multish/group -type f -name "*" -print0 | xargs -0) )
-#options=$(ls)
-echo ""
-echo "Create a multiple ssh connection to group"
-PS3="$prompt "
-select opt in "${options[@]}" "Copy SSH public key to group" "Quit" ; do 
-    if (( REPLY == 2 + ${#options[@]} )) ; then
-        exit
-    elif (( REPLY == 1 + ${#options[@]} )); then
-        multish-copy-id
-    elif (( REPLY > 0 && REPLY <= ${#options[@]} )) ; then
-        echo  "You picked $opt which is file $REPLY"
-        /usr/share/multish/tmux-cssh.sh $(cat $opt | awk -F\# '$1!="" { print $1 ;}')
-        exit
-        break
+#
+#    multissh - create a tmux-cssh connection from parameter or selected option
+#
+#    Authors: Raul Tierno <raultm@gmail.com>
+#             Fernando Lorenzo
+#
+#
 
-    else
-        echo "Invalid option. Try another one."
+function init {
+    # Comprobamos si recibe parámetro y es de fichero
+    checkargument $1
+    # Si no existe parámetro o no es válido mostramos el seleccionable de grupos en /etc/multish/group
+    selectoption
+}
+
+function end_message {
+    echo ""
+    echo "multish ended"
+    echo ""
+}
+
+function checkargument {
+    #Inicialmente, si recibe un parámetro comprobar si es un fichero (ruta completa) y tratarlo como archivo de grupo
+    #Si recibe un parámetro y no es un ruta, comprobar si es nombre de un archivo de grupo de la carpeta /etc/multish/group
+    #Llamada: multish example
+    if [ -f /etc/multish/group/$1 ]; then
+        echo "The entered parameter is inside /etc/multish/group/, we are going to process it."
+        cssh "/etc/multish/group/$1"
+        exit
+    #Llamada: multish /etc/multish/group/example
+    elif [[ -f $1 && ! -z $1 ]]; then #Si la cadena existe y es distinto de vacio
+        echo "You have entered a valid parameter, we are going to process it."
+        cssh $1
+        exit
+    elif [ ! -z $1 ]; then #Si la cadena es distinto de vacio
+        echo "The parameter '$1' entered is not valid, we process the files included in /etc/multish/group"
     fi
-done    
+}
 
-#ls -ld $opt
+function selectoption {
+    prompt="Select group: "
+    options=( $(find /etc/multish/group -type f -name "*" -print0 | xargs -0) )
+
+    echo ""
+    echo "Create a multiple ssh connection to group"
+    echo "-----------------------------------------"
+    PS3="$prompt "
+
+    select opt in "${options[@]}" "Copy SSH public key to group" "Quit" ; do
+        if (( REPLY == 2 + ${#options[@]} )) ; then
+            break
+        elif (( REPLY == 1 + ${#options[@]} )); then
+            echo
+            multish-copy-id
+            exit
+        elif (( REPLY > 0 && REPLY <= ${#options[@]} )) ; then
+            echo  "You picked $opt which is file $REPLY"
+            cssh $opt
+            break
+        else
+            echo "Invalid option. Try another one."
+        fi
+    done
+}
+
+function cssh {
+    /usr/share/multish/tmux-cssh.sh $(cat $1 | awk -F\# '$1!="" { print $1 ;}')
+    end_message
+}
+
+
+init $1

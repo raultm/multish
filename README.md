@@ -17,6 +17,20 @@ La idea es tener el comando instalable como paquete y que gestione las posibles 
 
 al instalar tener por defecto en `/etc/multish/groups` los archivos de grupos a los que acceder.
 
+# Instalación
+
+En la carpeta donde hayas descargado el archivo .deb apt/apt-get install instala el paquete y las dependencias.
+
+```sh
+apt install ./multish_0.2.0_all.deb
+```
+
+Si usas dpkg debes ejecutar despues apt para instalar las dependencias y finalizar la instalación
+
+```sh
+dpkg -i multish_X.Y.Z_all.deb
+apt-get -f install
+```
 
 # Uso
 
@@ -32,18 +46,18 @@ Si deseas entrar en los ordenadores sin usar contraseña puede añadir tu clave 
 
 Una de las opciones multish será elegir un grupo, pedirá contraseña y copiará clave pública en los hosts, si el usuario no tuviera clave publica creada le preguntará si quiere crearla y ejecutará el comando necesario.
 
-# Futuro/Ideas
+# Acceso Directo por CLI
 
-Si recibe un parámetro comprobar si es un fichero (ruta completa) y tratarlo como archivo de grupo
+Si recibe un parámetro comprueba si es un fichero (ruta completa) y lo trata como archivo de grupo 
 
 ```sh
-multish /home/to/group/file
+multish /home/to/group/example
 ```
 
-Si recibe un parámetro y no es un ruta, comprobar si es nombre de un archivo de grupo de la carpeta `/etc/multish/groups`
+Si recibe un parámetro y no es un ruta, comprueba si es nombre de un archivo de grupo de la carpeta `/etc/multish/groups` y lo trata
 
 ```sh
-multish aulas
+multish example
 ```
 
 # Contruir el paquete .deb
