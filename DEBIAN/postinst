@@ -1,0 +1,24 @@
+#!/bin/bash
+# file name preinst
+
+echo "Pre Installation code here ..."
+
+
+function createFolderIfNotExists   {
+    if [ ! -d $1 ]; then
+        mkdir -p $1
+    fi
+}
+
+function checkifDirectoryIsEmpty {
+    if [ -z "$(ls -A $1)" ]; then
+        echo "The directory $1 is empty"
+        cp /usr/share/multish/files/example $1/example
+    else
+        echo "The directory $1 is not empty. No Action"
+    fi
+}
+
+FOLDER="/etc/multish/group"
+createFolderIfNotExists $FOLDER
+checkifDirectoryIsEmpty $FOLDER

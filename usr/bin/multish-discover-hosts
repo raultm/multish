@@ -1,0 +1,56 @@
+#!/bin/bash
+#
+#    multissh-discovers-hosts - search for devices with 22 open port to store and connect to them
+#
+#    Authors: Raul Tierno <raultm@gmail.com>
+#
+#
+
+function findAllHostsWithPort22OpenInNetwork {
+    sudo nmap 192.168.1.1-254 -p22 -oG - | awk '/22\//{print $2 " # " $5}'
+}
+
+function readFromCLIWithDefaultOption {
+    read -p "$1 [$2]: " result
+    if [ -z $result ]; then
+        result=$2
+    fi
+    echo $result
+}
+
+function getSuggestedNetwork {
+    echo $(ip -4 -o addr | awk ' {print $4}' | grep -v "127.0.0.1" | head -n 1)
+}
+
+function getSuggestedName {
+    date +"%Y-%m-%d-%H-%M-%S-discover-results"
+}
+
+function createFolderIfNotExists   {
+    if [ ! -d $1 ]; then
+        mkdir -p $1
+    fi
+}
+
+SUGGESTEDNETWORK=$(getSuggestedNetwork)
+SUGGESTEDNAME=$(getSuggestedName)
+
+NETWORK=$(readFromCLIWithDefaultOption "Define la red que quieres explorar" $SUGGESTEDNETWORK)
+FILENAME=$(readFromCLIWithDefaultOption "Nombre de archivo donde se guardarán los resultados" $SUGGESTEDNAME)
+FOLDER="/etc/multish/group/network-discoveries"
+
+echo "Explorando $NETWORK. Los resultados se guardarán en $FILENAME. Espere a que termine el proceso..."
+
+createFolderIfNotExists $FOLDER
+
+sudo nmap $NETWORK -p22 -oG - | awk '/22\/open/{print "root@" $2 " # " $5}' > $FOLDER/$FILENAME
+
+echo "Exploración Finalizada. Los resultados se han guardado en $FOLDER/$FILENAME"
+
+RUN=$(readFromCLIWithDefaultOption "¿Quieres conectarte ahora a los equipos encontrados? y/n " "y")
+if [[ $RUN =~ ^[YySs]$ ]]
+then
+    multish "$FOLDER/$FILENAME"
+else
+    multish
+fi
