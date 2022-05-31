@@ -22,6 +22,7 @@ al instalar tener por defecto en `/etc/multish/groups` los archivos de grupos a 
 En la carpeta donde hayas descargado el archivo .deb apt/apt-get install instala el paquete y las dependencias. Poner './' para que sepa que es un archivo local y no un paquete de los repositorios
 
 ```sh
+wget https://github.com/raultm/multish/releases/download/v0.3.0/multish_0.3.0_all.deb
 apt install ./multish_0.3.0_all.deb
 ```
 
@@ -34,10 +35,44 @@ apt-get -f install
 
 # Uso
 
+## Acceder a través de opciones de menú
+
 Al invocar el siguient comando aparecerá listado de grupos, al seleccionar se abrirán las múltiples conexiones ssh
 
 ```sh
 multish
+```
+## Acceso Directo por CLI Ruta Completa
+
+Si recibe un parámetro comprueba si es un fichero (ruta completa) y lo trata como archivo de grupo 
+
+```sh
+multish /home/to/group/example
+```
+## Acceso Directo por CLI Ruta Relativa
+
+Si recibe un parámetro y no es un ruta, comprueba si es nombre de un archivo de grupo de la carpeta `/etc/multish/groups` y lo trata
+
+```sh
+multish example
+```
+
+
+# Buscar equipos en la red
+
+En algunas ocasiones nos va a interesar montar una red local y conectar varios equipos a esa red para una configuración general.
+
+Se ha añadido una opción que buscar en la red determinar equipos con el puerto 22 abierto, los equipos encontrados se guardan en `/etc/multish/group/network-discoveries` con el nombre que hayas seleccionado.
+
+Tras las búsqueda tambien te pregunta si deseas realizar una conexión multish automáticamente
+
+Ejemplo de comando
+```
+Define la red que quieres explorar [192.168.1.86/24]: 
+Nombre de archivo donde se guardarán los resultados [2022-05-31-21-31-49-discover-results]: 
+Explorando 192.168.1.86/24. Los resultados se guardarán en 2022-05-31-21-31-49-discover-results. Espere a que termine el proceso...
+Exploración Finalizada. Los resultados se han guardado en /etc/multish/group/network-discoveries/2022-05-31-21-31-49-discover-results
+¿Quieres conectarte ahora a los equipos encontrados? y/n  [y]:
 ```
 
 # Entrar sin contraseña en los equipos
@@ -46,19 +81,7 @@ Si deseas entrar en los ordenadores sin usar contraseña puede añadir tu clave 
 
 Una de las opciones multish será elegir un grupo, pedirá contraseña y copiará clave pública en los hosts, si el usuario no tuviera clave publica creada le preguntará si quiere crearla y ejecutará el comando necesario.
 
-# Acceso Directo por CLI
 
-Si recibe un parámetro comprueba si es un fichero (ruta completa) y lo trata como archivo de grupo 
-
-```sh
-multish /home/to/group/example
-```
-
-Si recibe un parámetro y no es un ruta, comprueba si es nombre de un archivo de grupo de la carpeta `/etc/multish/groups` y lo trata
-
-```sh
-multish example
-```
 
 # Contruir el paquete .deb
 
