@@ -22,14 +22,14 @@ al instalar tener por defecto en `/etc/multish/groups` los archivos de grupos a 
 En la carpeta donde hayas descargado el archivo .deb apt/apt-get install instala el paquete y las dependencias. Poner './' para que sepa que es un archivo local y no un paquete de los repositorios
 
 ```sh
-wget https://github.com/raultm/multish/releases/download/v0.3.0/multish_0.3.0_all.deb
-apt install ./multish_0.3.0_all.deb
+wget https://github.com/raultm/multish/releases/download/v0.3.1/multish_0.3.1_all.deb
+apt install ./multish_0.3.1_all.deb
 ```
 
 Si usas dpkg debes ejecutar despues apt para instalar las dependencias y finalizar la instalación
 
 ```sh
-dpkg -i multish_0.3.0_all.deb
+dpkg -i multish_0.3.1_all.deb
 apt-get -f install
 ```
 
@@ -69,9 +69,14 @@ Tras las búsqueda tambien te pregunta si deseas realizar una conexión multish 
 Ejemplo de comando
 ```
 Define la red que quieres explorar [192.168.1.86/24]: 
-Nombre de archivo donde se guardarán los resultados [2022-05-31-21-31-49-discover-results]: 
-Explorando 192.168.1.86/24. Los resultados se guardarán en 2022-05-31-21-31-49-discover-results. Espere a que termine el proceso...
-Exploración Finalizada. Los resultados se han guardado en /etc/multish/group/network-discoveries/2022-05-31-21-31-49-discover-results
+Nombre de archivo donde se guardarán los resultados [20220601-095559-discover-results]: 
+Nombre de usuario con el que te quiere conectar a esos equipos [root]: 
+
+Explorando 192.168.1.86/24. Los resultados se guardarán en 20220601-095559-discover-results. Espere a que termine el proceso...
+
+Exploración Finalizada. Se han encontrado 2 equipos con el puerto 22 abierto.
+Los resultados se han guardado en /etc/multish/group/network-discoveries/20220601-095559-discover-results
+
 ¿Quieres conectarte ahora a los equipos encontrados? y/n  [y]:
 ```
 

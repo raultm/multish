@@ -23,7 +23,7 @@ function getSuggestedNetwork {
 }
 
 function getSuggestedName {
-    date +"%Y-%m-%d-%H-%M-%S-discover-results"
+    date +"%Y%m%d-%H%M%S-discover-results"
 }
 
 function createFolderIfNotExists   {
@@ -34,18 +34,26 @@ function createFolderIfNotExists   {
 
 SUGGESTEDNETWORK=$(getSuggestedNetwork)
 SUGGESTEDNAME=$(getSuggestedName)
+SUGGESTEDUSER="root"
 
 NETWORK=$(readFromCLIWithDefaultOption "Define la red que quieres explorar" $SUGGESTEDNETWORK)
 FILENAME=$(readFromCLIWithDefaultOption "Nombre de archivo donde se guardarán los resultados" $SUGGESTEDNAME)
+USER=$(readFromCLIWithDefaultOption "Nombre de usuario con el que te quiere conectar a esos equipos" $SUGGESTEDUSER)
 FOLDER="/etc/multish/group/network-discoveries"
 
+echo ""
 echo "Explorando $NETWORK. Los resultados se guardarán en $FILENAME. Espere a que termine el proceso..."
+echo "" 
 
 createFolderIfNotExists $FOLDER
 
-sudo nmap $NETWORK -p22 -oG - | awk '/22\/open/{print "root@" $2 " # " $5}' > $FOLDER/$FILENAME
+sudo nmap $NETWORK -p22 -oG - | awk -v user="$USER" '/22\/open/{print user "@" $2 " # " $5}' > $FOLDER/$FILENAME
 
-echo "Exploración Finalizada. Los resultados se han guardado en $FOLDER/$FILENAME"
+NUMEQUIPOS=$(cat $FOLDER/$FILENAME | wc -l)
+
+echo "Exploración Finalizada. Se han encontrado $NUMEQUIPOS equipos con el puerto 22 abierto."
+echo "Los resultados se han guardado en $FOLDER/$FILENAME"
+echo ""
 
 RUN=$(readFromCLIWithDefaultOption "¿Quieres conectarte ahora a los equipos encontrados? y/n " "y")
 if [[ $RUN =~ ^[YySs]$ ]]
