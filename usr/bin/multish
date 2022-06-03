@@ -8,10 +8,20 @@
 #
 
 function init {
+    # Si no tiene configuración de tmux el usuario le ponemos una para manejar cursor y shortcut para sincronizar/desincronizar tabs
+    copyTmuxConfIfNotExist
     # Comprobamos si recibe parámetro y es de fichero
     checkargument $1
     # Si no existe parámetro o no es válido mostramos el seleccionable de grupos en /etc/multish/group
     selectoption
+}
+
+function copyTmuxConfIfNotExist {
+    DEFAULT_TMUX_CONF_PATH="/usr/share/multish/files/tmux.conf"
+    TMUX_CONF_USER_PATH="$HOME/.tmux.conf"
+    if [ ! -f $TMUX_CONF_USER_PATH ]; then
+        cp $DEFAULT_TMUX_CONF_PATH $TMUX_CONF_USER_PATH
+    fi
 }
 
 function end_message {

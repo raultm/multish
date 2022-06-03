@@ -2,18 +2,7 @@ Multish
 
 Comando que usa tmux y tmux-cssh para manejar multiples conexiones ssh al mismo tiempo
 
-Para generación de paquete voy a seguir el post [How To Create a Basic Debian Package](https://betterprogramming.pub/how-to-create-a-basic-debian-package-927be001ad80) y [Create a Debian package using dpkg-deb tool](https://blog.knoldus.com/create-a-debian-package-using-dpkg-deb-tool/)
 
-https://serverfault.com/questions/608379/debian-deb-package-replace-config-files
-
-
-???
-https://honk.sigxcpu.org/piki/projects/git-buildpackage/
-
-La idea es tener el comando instalable como paquete y que gestione las posibles dependencias
-- tmux
-- tmux-cssh
-- sshpass
 
 al instalar tener por defecto en `/etc/multish/groups` los archivos de grupos a los que acceder.
 
@@ -22,15 +11,15 @@ al instalar tener por defecto en `/etc/multish/groups` los archivos de grupos a 
 En la carpeta donde hayas descargado el archivo .deb apt/apt-get install instala el paquete y las dependencias. Poner './' para que sepa que es un archivo local y no un paquete de los repositorios
 
 ```sh
-wget https://github.com/raultm/multish/releases/download/v0.3.1/multish_0.3.1_all.deb
-apt install ./multish_0.3.1_all.deb
+wget https://github.com/raultm/multish/releases/download/v1.0.0/multish_1.0.0_all.deb
+sudo apt install ./multish_1.0.0_all.deb
 ```
 
 Si usas dpkg debes ejecutar despues apt para instalar las dependencias y finalizar la instalación
 
 ```sh
-dpkg -i multish_0.3.1_all.deb
-apt-get -f install
+sudo dpkg -i multish_1.0.0_all.deb
+sudo apt-get -f install
 ```
 
 # Uso
@@ -42,16 +31,34 @@ Al invocar el siguient comando aparecerá listado de grupos, al seleccionar se a
 ```sh
 multish
 ```
-## Acceso Directo por CLI Ruta Completa
 
-Si recibe un parámetro comprueba si es un fichero (ruta completa) y lo trata como archivo de grupo 
+Ejemplo de Salida
+```
+$ multish
+
+Create a multiple ssh connection to group
+-----------------------------------------
+1) /etc/multish/group/network-discoveries/20220603-101155-discover-results
+2) /etc/multish/group/pilar/salaprofesores
+3) /etc/multish/group/pilar/siatics
+4) /etc/multish/group/general/servidores-principales
+5) /etc/multish/group/extremadura/salaprofesores
+6) Find hosts with port 22 open in network
+7) Copy SSH public key to group
+8) Quit
+Select Option:
+```
+
+## Conexión Múltiple SSH por CLI usando Ruta Completa
+
+Si recibe un parámetro comprueba si es un fichero (ruta completa) y lo trata como archivo de grupo realizando automáticamente la conexión
 
 ```sh
 multish /home/to/group/example
 ```
-## Acceso Directo por CLI Ruta Relativa
+## Conexión Múltiple SSH por CLI usando Ruta Relativa
 
-Si recibe un parámetro y no es un ruta, comprueba si es nombre de un archivo de grupo de la carpeta `/etc/multish/groups` y lo trata
+Si recibe un parámetro y no es un ruta, comprueba si es nombre de un archivo de grupo de la carpeta `/etc/multish/groups` realizando automáticamente la conexión
 
 ```sh
 multish example
@@ -86,6 +93,22 @@ Si deseas entrar en los ordenadores sin usar contraseña puede añadir tu clave 
 
 Una de las opciones multish será elegir un grupo, pedirá contraseña y copiará clave pública en los hosts, si el usuario no tuviera clave publica creada le preguntará si quiere crearla y ejecutará el comando necesario.
 
+# TMUX Avanzado
+
+Si ejecutas el comando multish y detecta que tu usuario no tiene el archivo `~/.tmux.conf` te añadirá uno con dos opciones
+
+- Uso de ratón cuando estés en interfaz gráfica
+- Sincronizar/Desincronizar los pane con la combinación de teclas <kbd>Ctrl</kbd> + <kbd>B</kbd> -> <kbd>Ctrl</kbd> + <kbd>V</kbd>, si están sincronizados y haces esas dos combinaciones se desincronizará, si vuelves a ejecutar las dos combinaciones volverán a sincronizarse.
+
+```
+set -g mouse on        #For tmux version 2.1 and up
+
+# synchronize all panes in a window
+# If sync   Ctrl+B->Ctrl+V desync
+# If desync Ctrl+B->Ctrl+V sync
+bind C-V set-window-option synchronize-panes
+```
+
 
 
 # Contruir el paquete .deb
@@ -93,6 +116,20 @@ Una de las opciones multish será elegir un grupo, pedirá contraseña y copiar�
 ```sh
 dpkg-deb  -b . .
 ```
+
+Para generación de paquete voy a seguir el post [How To Create a Basic Debian Package](https://betterprogramming.pub/how-to-create-a-basic-debian-package-927be001ad80) y [Create a Debian package using dpkg-deb tool](https://blog.knoldus.com/create-a-debian-package-using-dpkg-deb-tool/)
+
+https://serverfault.com/questions/608379/debian-deb-package-replace-config-files
+
+
+???
+https://honk.sigxcpu.org/piki/projects/git-buildpackage/
+
+La idea es tener el comando instalable como paquete y que gestione las posibles dependencias
+- tmux
+- tmux-cssh
+- sshpass
+- nmap
 
 Una vez generado el paquete tan solo queda instalar donde se necesite
 
