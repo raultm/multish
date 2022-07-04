@@ -57,9 +57,13 @@ function selectoption {
     echo "-----------------------------------------"
     PS3="$prompt "
 
-    select opt in "${options[@]}" "Find hosts with port 22 open in network" "Copy SSH public key to group" "Quit" ; do
-        if (( REPLY == 3 + ${#options[@]} )) ; then
+    select opt in "${options[@]}" "Find hosts with port 22 open in network" "Copy SSH public key to group" "Wake Up Group" "Quit" ; do
+        if (( REPLY == 4 + ${#options[@]} )) ; then
             break
+        elif (( REPLY == 3 + ${#options[@]} )); then
+            echo
+            multish-wake
+            exit
         elif (( REPLY == 2 + ${#options[@]} )); then
             echo
             multish-copy-id

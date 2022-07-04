@@ -1,6 +1,6 @@
 Package: multish
-Version: 1.0.0
+Version: 1.0.3
 Architecture: all
 Maintainer: Raul Tierno<adminies.castuera1@educarex.es>
-Depends: tmux,sshpass,nmap
+Depends: tmux,sshpass,nmap,ldapscripts,wakeonlan
 Description: multish allows you to connect and act in multiple ssh connection simultaneously
