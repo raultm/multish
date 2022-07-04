@@ -11,15 +11,8 @@ al instalar tener por defecto en `/etc/multish/groups` los archivos de grupos a 
 En la carpeta donde hayas descargado el archivo .deb apt/apt-get install instala el paquete y las dependencias. Poner './' para que sepa que es un archivo local y no un paquete de los repositorios
 
 ```sh
-wget https://github.com/raultm/multish/releases/download/v1.0.0/multish_1.0.0_all.deb
-sudo apt install ./multish_1.0.0_all.deb
-```
-
-Si usas dpkg debes ejecutar despues apt para instalar las dependencias y finalizar la instalación
-
-```sh
-sudo dpkg -i multish_1.0.0_all.deb
-sudo apt-get -f install
+wget https://github.com/raultm/multish/releases/download/v1.0.3/multish_1.0.3_all.deb
+sudo apt install ./multish_1.0.3_all.deb
 ```
 
 # Uso
