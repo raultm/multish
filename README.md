@@ -11,8 +11,8 @@ al instalar tener por defecto en `/etc/multish/groups` los archivos de grupos a 
 En la carpeta donde hayas descargado el archivo .deb apt/apt-get install instala el paquete y las dependencias. Poner './' para que sepa que es un archivo local y no un paquete de los repositorios
 
 ```sh
-wget https://github.com/raultm/multish/releases/download/v1.0.3/multish_1.0.3_all.deb
-sudo apt install ./multish_1.0.3_all.deb
+wget https://github.com/raultm/multish/releases/download/v1.2.1/multish_1.2.1_all.deb
+sudo apt install ./multish_1.2.1_all.deb
 ```
 
 # Uso
@@ -102,7 +102,20 @@ set -g mouse on        #For tmux version 2.1 and up
 bind C-V set-window-option synchronize-panes
 ```
 
+# Mandar WOL (Wake on Lan)
 
+Se ha añadido la opción de mandar mensajes de wake on lan para un grupo determinado
+
+# Copiar los datos de grupo desde una conexión remota
+
+Haciendo uso de los valores cargados a través de `/etc/multish/.env`
+  - SSHUSER
+  - SSHMACHINE
+  - SSHGROUPSFOLDER
+
+Se pueden copiar los datos a tu carpeta local `/etc/multish/group`
+
+Como hay posibilidad de que se sobreescriban datos te pregunta antes de proceder
 
 # Contruir el paquete .deb
 

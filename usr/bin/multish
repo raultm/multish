@@ -7,6 +7,12 @@
 #
 #
 
+# Load env variables
+if [ -f /etc/multish/.env ]
+then
+    source /etc/multish/.env
+fi
+
 function init {
     # Si no tiene configuración de tmux el usuario le ponemos una para manejar cursor y shortcut para sincronizar/desincronizar tabs
     copyTmuxConfIfNotExist
@@ -22,6 +28,23 @@ function copyTmuxConfIfNotExist {
     if [ ! -f $TMUX_CONF_USER_PATH ]; then
         cp $DEFAULT_TMUX_CONF_PATH $TMUX_CONF_USER_PATH
     fi
+}
+
+function copyGroupsFromSSH {
+    echo "You are going to copy group files using the /etc/multish/.env configuration"
+    echo "The command which is gonna be executed"
+    echo "  scp -r $SSHUSER@$SSHMACHINE:$SSHGROUPSFOLDER/* /etc/multish/group"
+    echo " "
+    echo "Copy Data could overwrite existing files."
+    read -p "Do you want to continue?[y/n]" -n 1 -r
+    echo    # (optional) move to a new line
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+        scp -r $SSHUSER@$SSHMACHINE:$SSHGROUPSFOLDER/* /etc/multish/group
+        chmod -R 766 /etc/multish/group
+    else
+        exit 1
+    fi  
 }
 
 function end_message {
@@ -57,9 +80,13 @@ function selectoption {
     echo "-----------------------------------------"
     PS3="$prompt "
 
-    select opt in "${options[@]}" "Find hosts with port 22 open in network" "Copy SSH public key to group" "Wake Up Group" "Quit" ; do
-        if (( REPLY == 4 + ${#options[@]} )) ; then
+    select opt in "${options[@]}" "Find hosts with port 22 open in network" "Copy SSH public key to group" "Wake Up Group" "Get Groups from Server" "Quit" ; do
+        if (( REPLY == 5 + ${#options[@]} )) ; then
             break
+        elif (( REPLY == 4 + ${#options[@]} )); then
+            echo
+            copyGroupsFromSSH
+            exit
         elif (( REPLY == 3 + ${#options[@]} )); then
             echo
             multish-wake
