@@ -31,14 +31,21 @@ $ multish
 
 Create a multiple ssh connection to group
 -----------------------------------------
-1) /etc/multish/group/network-discoveries/20220603-101155-discover-results
-2) /etc/multish/group/pilar/salaprofesores
-3) /etc/multish/group/pilar/siatics
-4) /etc/multish/group/general/servidores-principales
-5) /etc/multish/group/extremadura/salaprofesores
-6) Find hosts with port 22 open in network
-7) Copy SSH public key to group
-8) Quit
+Create a multiple ssh connection to group
+-----------------------------------------
+ 1) /etc/multish/group/network-discoveries/20220603-101155-discover-results
+ 2) /etc/multish/group/network-discoveries/demo
+ 3) /etc/multish/group/pilar/salaprofesores
+ 4) /etc/multish/group/pilar/infolab
+ 5) /etc/multish/group/pilar/siatics
+ 6) /etc/multish/group/general/servidores-principales
+ 7) /etc/multish/group/extremadura/salaprofesores
+ 8) /etc/multish/group/extremadura/infolab
+ 9) Find hosts with port 22 open in network
+10) Copy SSH public key to group
+11) Wake Up Group
+12) Get Groups from Server
+13) Quit
 Select Option:
 ```
 
