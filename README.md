@@ -31,8 +31,6 @@ $ multish
 
 Create a multiple ssh connection to group
 -----------------------------------------
-Create a multiple ssh connection to group
------------------------------------------
  1) /etc/multish/group/network-discoveries/20220603-101155-discover-results
  2) /etc/multish/group/network-discoveries/demo
  3) /etc/multish/group/pilar/salaprofesores
