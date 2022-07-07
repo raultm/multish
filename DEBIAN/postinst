@@ -23,7 +23,7 @@ function  checkIfFileExists {
     if [ -f "$1" ]; then
         echo "$1 already exists. No action"
     else
-        cp /usr/share/multish/files/.env.example $1/.env
+        cp /usr/share/multish/files/.env.example $1
         echo "$1 has been created."
     fi
 
