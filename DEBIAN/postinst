@@ -35,3 +35,7 @@ checkIfFileExists $DOTENVFILE
 FOLDER="/etc/multish/group"
 createFolderIfNotExists $FOLDER
 checkifDirectoryIsEmpty $FOLDER
+
+ETCFOLDER="/etc/multish"
+# Set permissions to 766
+chmod -R 766 $ETCFOLDER
