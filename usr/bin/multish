@@ -80,24 +80,28 @@ function selectoption {
     echo "-----------------------------------------"
     PS3="$prompt "
 
-    select opt in "${options[@]}" "Find hosts with port 22 open in network" "Copy SSH public key to group" "Wake Up Group" "Get Groups from Server" "Quit" ; do
-        if (( REPLY == 5 + ${#options[@]} )) ; then
+    select opt in "${options[@]}" "Find hosts with port 22 open in network" "Find hosts with custom ports open in network" "Copy SSH public key to group" "Wake Up Group" "Get Groups from Server" "Quit" ; do
+        if (( REPLY == 6 + ${#options[@]} )) ; then
             break
-        elif (( REPLY == 4 + ${#options[@]} )); then
+        elif (( REPLY == 5 + ${#options[@]} )); then
             echo
             copyGroupsFromSSH
             exit
-        elif (( REPLY == 3 + ${#options[@]} )); then
+        elif (( REPLY == 4 + ${#options[@]} )); then
             echo
             multish-wake
             exit
-        elif (( REPLY == 2 + ${#options[@]} )); then
+        elif (( REPLY == 3 + ${#options[@]} )); then
             echo
             multish-copy-id
             exit
-        elif (( REPLY == 1 + ${#options[@]} )); then
+        elif (( REPLY == 2 + ${#options[@]} )); then
             echo
             multish-discover-hosts
+            exit
+        elif (( REPLY == 1 + ${#options[@]} )); then
+            echo
+            multish-discover-hosts 22
             exit
         elif (( REPLY > 0 && REPLY <= ${#options[@]} )) ; then
             echo  "You picked $opt which is file $REPLY"

@@ -1,5 +1,5 @@
 Package: multish
-Version: 1.2.4
+Version: 1.3.0
 Architecture: all
 Maintainer: Raul Tierno<adminies.castuera1@educarex.es>
 Depends: tmux,sshpass,nmap,ldapscripts,wakeonlan
